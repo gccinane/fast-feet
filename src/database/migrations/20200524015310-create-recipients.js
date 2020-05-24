@@ -2,7 +2,7 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('users', {
+    return queryInterface.createTable('recipients', {
       id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
@@ -14,14 +14,26 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-
-      email: {
+      street: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true,
       },
-
-      password_hash: {
+      street_number: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      address_complement: {
+        type: Sequelize.STRING,
+      },
+      state: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      city: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      zip_code: {
         type: Sequelize.STRING,
         allowNull: false,
       },
@@ -38,6 +50,6 @@ module.exports = {
   },
 
   down: (queryInterface) => {
-    return queryInterface.dropTable('users');
+    return queryInterface.dropTable('recipients');
   },
 };

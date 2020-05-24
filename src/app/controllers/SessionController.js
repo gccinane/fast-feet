@@ -15,8 +15,9 @@ class SessionController {
     }
 
     const { email, password } = req.body;
+    console.log(email, password);
 
-    const user = User.findOne({ where: { email } });
+    const user = await User.findOne({ where: { email } });
 
     if (!user) {
       return res.status(401).json({ error: 'User not found' });
