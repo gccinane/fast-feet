@@ -3,7 +3,6 @@ class Recipient extends Model {
   static init(sequelize) {
     super.init(
       {
-        id: Sequelize.INTEGER,
         name: Sequelize.STRING,
         street: Sequelize.STRING,
         street_number: Sequelize.STRING,
