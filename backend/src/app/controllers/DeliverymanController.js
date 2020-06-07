@@ -23,7 +23,15 @@ class DeliverymanController {
 
     const { name, email } = await Deliveryman.create(req.body);
 
-    return res.status(200).json({ name, email });
+    return res.json({ name, email });
+  }
+
+  async index(req, res) {
+    const deliverymans = await Deliveryman.findAll({
+      attributes: ['name', 'email'],
+    });
+
+    return res.json(deliverymans);
   }
 }
 
