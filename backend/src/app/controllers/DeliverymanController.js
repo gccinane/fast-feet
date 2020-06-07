@@ -18,7 +18,9 @@ class DeliverymanController {
     });
 
     if (emailExists) {
-      return res.status(400).json({ error: 'Email already exists' });
+      return res
+        .status(400)
+        .json({ error: 'Deliveryman email already exists' });
     }
 
     const { name, email } = await Deliveryman.create(req.body);
@@ -29,6 +31,7 @@ class DeliverymanController {
   async index(req, res) {
     const deliverymans = await Deliveryman.findAll({
       attributes: ['name', 'email'],
+      order: [['id', 'DESC']],
     });
 
     return res.json(deliverymans);
@@ -57,13 +60,29 @@ class DeliverymanController {
       });
 
       if (userExists) {
-        return res.status(400).json({ error: 'User already exists' });
+        return res
+          .status(400)
+          .json({ error: 'Deliveryman email already exists' });
       }
     }
 
     const { name, email } = await foundDeliveryman.update(req.body);
 
     return res.json({ name, email });
+  }
+
+  async delete(req, res) {
+    const deliverymanId = req.params.id;
+
+    const foundDeliveryman = await Deliveryman.findByPk(deliverymanId);
+
+    if (!foundDeliveryman) {
+      return res.status(400).json({ error: 'Deliveryman does not exist' });
+    }
+
+    (await foundDeliveryman).destroy();
+
+    return res.json({ message: 'Deliveryman successfully deleted.' });
   }
 }
 
