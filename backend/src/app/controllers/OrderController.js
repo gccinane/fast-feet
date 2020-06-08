@@ -29,13 +29,18 @@ class OrderController {
       return res.status(400).json({ error: 'Recipient does not exist' });
     }
 
-    const order = await Order.create({ deliveryman_id, recipient_id, product });
-
-    await Queue.add(CreatedOrderMail.key, {
-      order,
+    const order = await Order.create({
+      deliveryman_id,
+      recipient_id,
+      product,
     });
 
-    return res.json({ ok: true });
+    await Queue.add(CreatedOrderMail.key, {
+      recipient,
+      deliveryman,
+    });
+
+    return res.json({ order });
   }
 
   async index(req, res) {
