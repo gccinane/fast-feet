@@ -66,7 +66,7 @@ class OrderController {
     const { deliveryman_id, recipient_id } = req.body;
     const orderId = req.params.id;
     const order = await Order.findByPk(orderId);
-    console.log('mano');
+
     if (!order) {
       return res.status(400).json({ error: 'Order not found' });
     }
@@ -78,14 +78,24 @@ class OrderController {
     if (recipient_id && !(await Recipient.findByPk(recipient_id))) {
       return res.status(400).json({ error: 'Recipient does not exist' });
     }
-    console.log('dasd');
+
     const updatedOrder = await order.update(req.body);
 
     return res.json(updatedOrder);
   }
 
   async delete(req, res) {
-    return res.json({ ok: true });
+    const orderId = req.params.id;
+
+    const order = await Order.findByPk(orderId);
+
+    if (!order) {
+      return res.status(400).json({ error: 'Order not found' });
+    }
+
+    await order.destroy();
+
+    return res.status(200).json({ message: 'Order successfully deleted' });
   }
 }
 
