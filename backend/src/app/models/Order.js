@@ -10,7 +10,7 @@ class Order extends Model {
         signature_id: Sequelize.INTEGER,
         start_date: Sequelize.DATE,
         end_date: Sequelize.DATE,
-        canceled_date: Sequelize.DATE,
+        canceled_at: Sequelize.DATE,
       },
       { sequelize }
     );
