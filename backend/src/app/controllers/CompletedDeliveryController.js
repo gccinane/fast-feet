@@ -1,7 +1,9 @@
 import Order from '../models/Order';
 import Recipient from '../models/Recipient';
 import Deliveryman from '../models/Deliveryman';
+import File from '../models/File';
 import { Op } from 'sequelize';
+import * as Yup from 'yup';
 
 class CompletedDeliveryController {
   async index(req, res) {
@@ -31,7 +33,44 @@ class CompletedDeliveryController {
   }
 
   async update(req, res) {
-    return res.json({ ok: true });
+    const schema = Yup.object().shape({
+      signature_id: Yup.number().required(),
+    });
+
+    if (!(await schema.isValid(req.body))) {
+      return res
+        .status(400)
+        .json({ error: 'To complete a delivery you must send the signature' });
+    }
+
+    const { deliverymanId, deliveryId } = req.params;
+
+    const signaturePhoto = await File.findByPk(Number(req.body.signature_id));
+
+    if (!signaturePhoto) {
+      return res.status(400).json({ error: 'Signature picture not found' });
+    }
+    const delivery = await Order.findOne({
+      where: {
+        id: deliveryId,
+        deliveryman_id: deliverymanId,
+        start_date: { [Op.not]: null },
+        end_date: null,
+      },
+    });
+
+    if (!delivery) {
+      return res.json({ error: 'Delivery not found' });
+    }
+
+    const currentDate = new Date();
+
+    await delivery.update({
+      end_date: currentDate,
+      signature_id: signaturePhoto.id,
+    });
+
+    return res.json(delivery);
   }
 }
 
