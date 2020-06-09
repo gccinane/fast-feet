@@ -22,13 +22,20 @@ routes.get(
   '/deliveryman/:id/intransit-deliveries',
   InTransitDeliveryController.index
 );
-routes.get(
-  'deliveryman/:id/completedDeliveries',
-  CompletedDeliveryController.index
-);
+
 routes.put(
   '/deliveryman/:deliverymanId/intransit-deliveries/:deliveryId',
   InTransitDeliveryController.update
+);
+
+routes.get(
+  '/deliveryman/:id/completed-deliveries',
+  CompletedDeliveryController.index
+);
+
+routes.put(
+  '/deliveryman/:deliverymanId/completed-deliveries/:deliveryId',
+  CompletedDeliveryController.update
 );
 
 routes.use(authMiddleware);
