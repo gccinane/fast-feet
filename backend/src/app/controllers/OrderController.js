@@ -63,9 +63,9 @@ class OrderController {
       return res.status(400).json({ error: 'Validation fails' });
     }
 
-    const { deliveryman_id, recipient_id } = req.body;
     const orderId = req.params.id;
     const order = await Order.findByPk(orderId);
+    const { deliveryman_id, recipient_id } = req.body;
 
     if (!order) {
       return res.status(400).json({ error: 'Order not found' });
