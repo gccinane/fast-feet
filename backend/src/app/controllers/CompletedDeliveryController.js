@@ -45,11 +45,12 @@ class CompletedDeliveryController {
 
     const { deliverymanId, deliveryId } = req.params;
 
-    const signaturePhoto = await File.findByPk(Number(req.body.signature_id));
+    const signaturePhoto = await File.findByPk(req.body.signature_id);
 
     if (!signaturePhoto) {
       return res.status(400).json({ error: 'Signature picture not found' });
     }
+
     const delivery = await Order.findOne({
       where: {
         id: deliveryId,
