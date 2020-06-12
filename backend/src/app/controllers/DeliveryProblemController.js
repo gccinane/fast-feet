@@ -4,6 +4,8 @@ import Deliveryman from '../models/Deliveryman';
 import Recipient from '../models/Recipient';
 import File from '../models/File';
 import DeliveryProblem from '../models/DeliveryProblem';
+import CanceledDeliveryMail from '../jobs/CanceledDeliveryMail';
+import Queue from '../../lib/Queue';
 
 class DeliveryProblemController {
   async store(req, res) {
@@ -96,14 +98,27 @@ class DeliveryProblemController {
 
     const delivery = await Order.findOne({
       where: { id: problem.delivery_id, canceled_at: null },
+      include: [
+        {
+          model: Deliveryman,
+          as: 'deliveryman',
+        },
+        {
+          model: Recipient,
+          as: 'recipient',
+        },
+      ],
     });
 
     if (!delivery) {
       return res.status(400).json({ error: 'Delivery already canceled' });
     }
+
     await delivery.update({
       canceled_at: new Date(),
     });
+
+    Queue.add(CanceledDeliveryMail.key, { delivery, problem });
 
     return res.json({ message: 'Delivery successfully canceled' });
   }
