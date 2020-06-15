@@ -6,6 +6,7 @@ import File from '../models/File';
 import DeliveryProblem from '../models/DeliveryProblem';
 import CanceledDeliveryMail from '../jobs/CanceledDeliveryMail';
 import Queue from '../../lib/Queue';
+import { Op } from 'sequelize';
 
 class DeliveryProblemController {
   async store(req, res) {
@@ -18,18 +19,25 @@ class DeliveryProblemController {
     }
     const deliveryId = req.params.id;
 
-    const delivery = await Order.findByPk(deliveryId);
+    const delivery = await Order.findOne({
+      where: {
+        id: deliveryId,
+        canceled_at: null,
+        start_date: { [Op.not]: null },
+        end_date: { [Op.not]: null },
+      },
+    });
 
     if (!delivery) {
       return res.status(400).json({ error: 'Delivery does not exist' });
     }
 
-    const deliveryProblem = await DeliveryProblem.create({
+    const { id, description, delivery_id } = await DeliveryProblem.create({
       description: req.body.description,
       delivery_id: deliveryId,
     });
 
-    return res.json(deliveryProblem);
+    return res.json(id, description, delivery_id);
   }
 
   /**
@@ -77,12 +85,17 @@ class DeliveryProblemController {
   async show(req, res) {
     const deliveryId = req.params.id;
 
+    const delivery = await Order.findByPk(deliveryId);
+
+    if (!delivery) {
+      return res.status(400).json({ error: 'Delivery does not exist' });
+    }
     const deliveryProblems = await DeliveryProblem.findAll({
       where: { delivery_id: deliveryId },
     });
 
     if (!deliveryProblems) {
-      return res.status(400).json({ error: 'Delivery does not ' });
+      return res.status(400).json({ error: 'No delivery problems ' });
     }
     return res.json(deliveryProblems);
   }

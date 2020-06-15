@@ -14,6 +14,7 @@ class CompletedDeliveryController {
         deliveryman_id: deliverymanId,
         end_date: { [Op.not]: null },
         start_date: { [Op.not]: null },
+        canceled_at: null,
       },
       attributes: ['product'],
       include: [
@@ -66,12 +67,26 @@ class CompletedDeliveryController {
 
     const currentDate = new Date();
 
-    await delivery.update({
+    const {
+      product,
+      end_date,
+      start_date,
+      id,
+      recipient_id,
+      deliveryman_id,
+    } = await delivery.update({
       end_date: currentDate,
       signature_id: signaturePhoto.id,
     });
 
-    return res.json(delivery);
+    return res.json({
+      product,
+      end_date,
+      start_date,
+      id,
+      recipient_id,
+      deliveryman_id,
+    });
   }
 }
 

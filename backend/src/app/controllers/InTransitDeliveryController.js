@@ -19,7 +19,8 @@ class InTransitDeliveryController {
       where: {
         deliveryman_id: deliverymanId,
         start_date: { [Op.not]: null },
-        end_date: { [Op.is]: null },
+        end_date: null,
+        canceled_at: null,
       },
       attributes: ['product'],
       include: [
@@ -44,6 +45,7 @@ class InTransitDeliveryController {
         canceled_at: null,
         signature_id: null,
         start_date: null,
+        end_date: null,
       },
     });
 
@@ -74,9 +76,14 @@ class InTransitDeliveryController {
         .json({ error: 'Only 5 orders can be taken out dailly.' });
     }
 
-    await delivery.update({ start_date: currentDate });
+    const {
+      id,
+      start_date,
+      deliveryman_id,
+      recipient_id,
+    } = await delivery.update({ start_date: currentDate });
 
-    return res.json(delivery);
+    return res.json({ id, start_date, deliveryman_id, recipient_id });
   }
 }
 

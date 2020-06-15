@@ -46,7 +46,16 @@ class RecipientController {
     });
   }
 
-  async index() {}
+  async index(req, res) {
+    const { page = 1, limit = 5 } = req.query;
+
+    const recipients = await Recipient.findAll({
+      attributes: { exclude: ['createdAt', 'updatedAt'] },
+      offset: (page - 1) * limit,
+    });
+
+    return res.json(recipients);
+  }
 
   async update(req, res) {
     const schema = Yup.object().shape({
@@ -96,7 +105,19 @@ class RecipientController {
     });
   }
 
-  async delete() {}
+  async delete(req, res) {
+    const id = req.params.id;
+
+    const recipient = await Recipient.findByPk(id);
+
+    if (!recipient) {
+      return res.status(400).json({ error: 'Recipient does not exist' });
+    }
+
+    await recipient.destroy();
+
+    return res.json({ message: 'Recipient deleted successfully' });
+  }
 }
 
 export default new RecipientController();

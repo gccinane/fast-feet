@@ -29,7 +29,7 @@ class OrderController {
       return res.status(400).json({ error: 'Recipient does not exist' });
     }
 
-    const order = await Order.create({
+    const { id } = await Order.create({
       deliveryman_id,
       recipient_id,
       product,
@@ -40,19 +40,46 @@ class OrderController {
       deliveryman,
     });
 
-    return res.json({ order });
+    return res.json(id, product, recipient_id, deliveryman_id);
   }
 
   async index(req, res) {
+    const { page = 1 } = req.query;
     const orders = await Order.findAll({
-      attributes: ['recipient_id', 'deliveryman_id', 'product'],
+      attributes: [
+        'recipient_id',
+        'deliveryman_id',
+        'product',
+        'canceled_at',
+        'start_date',
+        'end_date',
+      ],
+      limit: 20,
+      offset: (page - 1) * 20,
+      include: [
+        {
+          model: Recipient,
+          as: 'recipient',
+          attributes: { exclude: ['createdAt', 'updatedAt'] },
+        },
+        {
+          model: Deliveryman,
+          as: 'deliveryman',
+          attributes: ['id', 'name', 'email'],
+        },
+      ],
     });
     return res.json(orders);
   }
 
+  /**
+   *
+   * admin pode alterar a data de inicio e fim, tambem pode alterar a
+   * data do final para ser anterior a de inicio e vice versa
+   */
   async update(req, res) {
     const schema = Yup.object().shape({
-      name: Yup.string(),
+      product: Yup.string(),
       recipient_id: Yup.number(),
       deliveryman_id: Yup.number(),
       start_date: Yup.date(),
@@ -79,21 +106,31 @@ class OrderController {
       return res.status(400).json({ error: 'Recipient does not exist' });
     }
 
-    const updatedOrder = await order.update(req.body);
+    const { id, start_date, end_date, product } = await order.update(req.body);
 
-    return res.json(updatedOrder);
+    return res.json(
+      id,
+      start_date,
+      end_date,
+      product,
+      recipient_id,
+      deliveryman_id
+    );
   }
 
   async delete(req, res) {
     const orderId = req.params.id;
 
-    const order = await Order.findByPk(orderId);
+    const order = await Order.findOne({
+      where: { id: orderId, canceled_at: null },
+    });
 
     if (!order) {
       return res.status(400).json({ error: 'Order not found' });
     }
+    const currentDate = new Date();
 
-    await order.destroy();
+    await order.update({ canceled_at: currentDate });
 
     return res.status(200).json({ message: 'Order successfully deleted' });
   }
