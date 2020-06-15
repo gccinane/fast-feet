@@ -23,7 +23,7 @@ class DeliveryProblemController {
         id: deliveryId,
         canceled_at: null,
         start_date: { [Op.not]: null },
-        end_date: { [Op.not]: null },
+        end_date: null,
       },
     });
 
@@ -42,6 +42,7 @@ class DeliveryProblemController {
   async index(req, res) {
     const { page = 1, limit = 10 } = req.query;
     const deliveries = await Order.findAll({
+      where: { canceled_at: null },
       include: [
         {
           model: DeliveryProblem,
