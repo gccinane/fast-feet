@@ -2,7 +2,6 @@ import * as Yup from 'yup';
 import Order from '../models/Order';
 import Deliveryman from '../models/Deliveryman';
 import Recipient from '../models/Recipient';
-import File from '../models/File';
 import DeliveryProblem from '../models/DeliveryProblem';
 import CanceledDeliveryMail from '../jobs/CanceledDeliveryMail';
 import Queue from '../../lib/Queue';
@@ -40,45 +39,19 @@ class DeliveryProblemController {
     return res.json(id, description, delivery_id);
   }
 
-  /**
-   * lista todos os problemas
-   */
   async index(req, res) {
-    const deliveries = await DeliveryProblem.findAll({
-      attributes: ['description', 'delivery_id'],
+    const { page = 1, limit = 10 } = req.query;
+    const deliveries = await Order.findAll({
       include: [
         {
-          model: Order,
-          attributes: ['product'],
-          include: [
-            {
-              model: Deliveryman,
-              as: 'deliveryman',
-              attributes: ['name', 'email'],
-            },
-            {
-              model: Recipient,
-              as: 'recipient',
-              attributes: [
-                'name',
-                'street',
-                'street_number',
-                'address_complement',
-                'state',
-                'city',
-                'zip_code',
-              ],
-            },
-            {
-              model: File,
-              as: 'signature',
-              attributes: ['id'],
-            },
-          ],
+          model: DeliveryProblem,
+          as: 'problems',
+          where: { delivery_id: { [Op.not]: null } },
         },
       ],
+      limit,
+      offset: (page - 1) * limit,
     });
-
     return res.json(deliveries);
   }
 
