@@ -8,7 +8,7 @@ import { Op } from 'sequelize';
 class InTransitDeliveryController {
   async index(req, res) {
     const deliverymanId = req.params.id;
-    const { page = 0, limit = 5 } = req.query;
+    const { page = 1, limit = 5 } = req.query;
 
     const deliveryman = await Deliveryman.findByPk(deliverymanId);
 
@@ -23,6 +23,7 @@ class InTransitDeliveryController {
         end_date: null,
         canceled_at: null,
       },
+      limit,
       offset: (page - 1) * limit,
       attributes: ['product'],
       include: [

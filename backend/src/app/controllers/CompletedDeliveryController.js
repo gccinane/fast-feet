@@ -1,14 +1,14 @@
 import Order from '../models/Order';
 import Recipient from '../models/Recipient';
-import Deliveryman from '../models/Deliveryman';
+
 import File from '../models/File';
 import { Op } from 'sequelize';
 import * as Yup from 'yup';
 
 class CompletedDeliveryController {
   async index(req, res) {
-    const deliverymanId = Number(req.params.id);
-
+    const deliverymanId = req.params.id;
+    const { page = 1, limit = 10 } = req.query;
     const orders = await Order.findAll({
       where: {
         deliveryman_id: deliverymanId,
@@ -16,20 +16,18 @@ class CompletedDeliveryController {
         start_date: { [Op.not]: null },
         canceled_at: null,
       },
-      attributes: ['product'],
+      limit,
+      offset: (page - 1) * limit,
+      attributes: ['product', 'start_date', 'end_date'],
       include: [
         {
           model: Recipient,
           as: 'recipient',
           attributes: ['name', 'street', 'state', 'city', 'zip_code'],
         },
-        {
-          model: Deliveryman,
-          as: 'deliveryman',
-          attributes: ['name'],
-        },
       ],
     });
+
     return res.json(orders);
   }
 
