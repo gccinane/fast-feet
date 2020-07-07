@@ -1,9 +1,22 @@
 import React from 'react';
+import { Form, Input } from '@rocketseat/unform';
 
-// import { Container } from './styles';
+import logo from '~/assets/fastfeet-logo.png';
 
 function SignIn() {
-  return <h1>sign</h1>;
+  return (
+    <>
+      <img src={logo} alt="fast-feet" />
+      <Form>
+        <p>SEU E-MAIL</p>
+        <Input placeholder="exemplo@gmail.com" name="email" type="email" />
+        <p>SUA SENHA</p>
+        <Input placeholder="Senha secreta" name="password" type="password" />
+
+        <button type="submit">Enviar</button>
+      </Form>
+    </>
+  );
 }
 
 export default SignIn;
