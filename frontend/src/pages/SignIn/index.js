@@ -1,13 +1,26 @@
 import React from 'react';
 import { Form, Input } from '@rocketseat/unform';
+import * as Yup from 'yup';
 
 import logo from '~/assets/fastfeet-logo.png';
 
+const schema = Yup.object().shape({
+  email: Yup.string()
+    .email('Digite um email válido')
+    .required('Email é obrigatório'),
+  password: Yup.string()
+    .min(6, 'Senha com mínimo de 6 dígitos')
+    .required('Senha é obrigatória'),
+});
+
 function SignIn() {
+  function handleSubmit() {
+    console.tron.log('vai');
+  }
   return (
     <>
       <img src={logo} alt="fast-feet" />
-      <Form>
+      <Form onSubmit={handleSubmit} schema={schema}>
         <p>SEU E-MAIL</p>
         <Input placeholder="exemplo@gmail.com" name="email" type="email" />
         <p>SUA SENHA</p>
