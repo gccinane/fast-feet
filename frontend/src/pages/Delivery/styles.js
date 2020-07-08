@@ -7,7 +7,7 @@ export const Container = styled.div`
   header {
     width: 100%;
     max-width: 980px;
-    margin: 0 auto;
+    margin: 2px auto;
     h1 {
       margin-top: 20px;
       font-size: 22px;
@@ -16,24 +16,34 @@ export const Container = styled.div`
 
     div {
       margin-top: 20px;
-      margin-bottom: 0;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
-
-      input[type='search'] {
-        font-family: FontAwesome;
-      }
-      button {
-        border: none;
-        background: #7159c1;
-        padding: 8px;
-        border-radius: 4px;
-        color: #eee;
-        font-weight: bold;
-      }
     }
   }
+`;
+
+export const AddDeliveryButton = styled.button`
+  padding: 8px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  max-height: 40px;
+  border: none;
+  background: #7159c1;
+  border-radius: 4px;
+  color: #eee;
+  font-weight: bold;
+`;
+
+export const FilterDelivery = styled.input`
+  align-items: center;
+  max-height: 32px;
+  line-height: 0;
+  border: none;
+  box-shadow: 0 0 1px;
 `;
 
 export const DeliveryTable = styled.table`
@@ -98,5 +108,3 @@ export const DeliverymanInitialLetters = styled.div`
   color: ${darken(0.15, '#6b8e23')};
   margin-right: 5px;
 `;
-
-export const FilterDeliveryButton = styled.button``;

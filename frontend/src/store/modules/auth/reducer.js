@@ -13,10 +13,10 @@ export default function auth(state = INITIAL_STATE, action) {
         draft.loading = true;
         break;
       }
-
       case '@auth/SIGN_IN_SUCCESS': {
         draft.token = action.payload.token;
         draft.signed = true;
+        draft.loading = false;
         break;
       }
       case '@auth/SIGN_FAILURE': {
@@ -28,9 +28,7 @@ export default function auth(state = INITIAL_STATE, action) {
         draft.signed = false;
         break;
       }
-
       default:
-        break;
     }
   });
 }

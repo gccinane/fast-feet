@@ -1,25 +1,46 @@
-import React from 'react';
-import { FaSearch } from 'react-icons/fa';
+import React, { useState, useEffect } from 'react';
+import { FiPlus } from 'react-icons/fi';
 import {
   Container,
   DeliveryTable,
   DeliveryStatus,
   DeliverymanAvatar,
   DeliverymanInitialLetters,
+  AddDeliveryButton,
+  FilterDelivery,
 } from './styles';
+import api from '~/services/api';
 
 function Delivery() {
+  const [deliveries, setDeliveries] = useState([]);
+
+  useEffect(() => {
+    async function loadDeliveries() {
+      try {
+        const response = await api.get('orders');
+        setDeliveries(response.data);
+      } catch (error) {
+        console.tron.log(error);
+      }
+    }
+
+    loadDeliveries();
+  }, []);
+
   return (
     <Container>
       <header>
         <h1>Gerenciando encomendas</h1>
         <div>
-          <input
+          <FilterDelivery
             type="search"
             name="delivery"
             placeholder="Buscar por encomendas"
           />
-          <button type="button">CADASTRAR</button>
+          <AddDeliveryButton type="button">
+            <FiPlus size={24} color="#eee" style={{ marginRight: '4px' }} />
+            CADASTRAR
+          </AddDeliveryButton>
         </div>
       </header>
       <DeliveryTable>
@@ -35,81 +56,29 @@ function Delivery() {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>luis VAN BETHOVEN DO CARAI OW DOIDO</td>
-            <td>
-              <DeliverymanAvatar>
-                <DeliverymanInitialLetters>DJ</DeliverymanInitialLetters>
-                DEUS JAVAN
-              </DeliverymanAvatar>
-            </td>
-            <td>chapadao do sul</td>
-            <td>MT</td>
-            <td>
-              <DeliveryStatus>
-                <figure />
-                CAMINHA
-              </DeliveryStatus>
-            </td>
-            <td>
-              <button type="button">...</button>
-            </td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>luis</td>
-            <td>joao</td>
-            <td>chapadao do sul</td>
-            <td>MT</td>
-            <td>a caminho</td>
-            <td>...</td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>luis</td>
-            <td>joao</td>
-            <td>chapadao do sul</td>
-            <td>MT</td>
-            <td>a caminho</td>
-            <td>...</td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>luis</td>
-            <td>joao</td>
-            <td>chapadao do sul</td>
-            <td>MT</td>
-            <td>a caminho</td>
-            <td>...</td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>luis</td>
-            <td>joao</td>
-            <td>chapadao do sul</td>
-            <td>MT</td>
-            <td>a caminho</td>
-            <td>...</td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>luis</td>
-            <td>joao</td>
-            <td>chapadao do sul</td>
-            <td>MT</td>
-            <td>a caminho</td>
-            <td>...</td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>luis</td>
-            <td>joao</td>
-            <td>chapadao do sul</td>
-            <td>MT</td>
-            <td>a caminho</td>
-            <td>...</td>
-          </tr>
+          {deliveries.map(({ deliveryman, recipient, ...delivery }) => (
+            <tr key={String(delivery.id)}>
+              <td>{delivery.id}</td>
+              <td>{delivery.product}</td>
+              <td>
+                <DeliverymanAvatar>
+                  <DeliverymanInitialLetters>DJ</DeliverymanInitialLetters>
+                  {deliveryman.name}
+                </DeliverymanAvatar>
+              </td>
+              <td>{recipient.city}</td>
+              <td>{recipient.state}</td>
+              <td>
+                <DeliveryStatus>
+                  <figure />
+                  CAMINHA
+                </DeliveryStatus>
+              </td>
+              <td>
+                <button type="button">...</button>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </DeliveryTable>
     </Container>

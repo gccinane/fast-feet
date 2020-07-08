@@ -15,6 +15,8 @@ export function* signIn({ payload }) {
 
     yield put(signInSuccess(token, user));
 
+    api.defaults.headers.Authorization = `Bearer ${token}`;
+
     history.push('/delivery');
   } catch (error) {
     console.tron.log(error);
@@ -26,7 +28,18 @@ export function signOut() {
   history.push('/');
 }
 
+export function setToken({ payload }) {
+  if (!payload) return;
+
+  const { token } = payload.auth;
+
+  if (token) {
+    api.defaults.headers.Authorization = `Bearer ${token}`;
+  }
+}
+
 export default all([
   takeLatest('@auth/SIGN_IN_REQUEST', signIn),
   takeLatest('@auth/SIGN_OUT', signOut),
+  takeLatest('persist/REHYDRATE', setToken),
 ]);
