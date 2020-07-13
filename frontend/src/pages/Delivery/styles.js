@@ -8,6 +8,7 @@ export const Container = styled.div`
     width: 100%;
     max-width: 980px;
     margin: 2px auto;
+
     h1 {
       margin-top: 20px;
       font-size: 22px;
@@ -18,6 +19,7 @@ export const Container = styled.div`
       margin-top: 20px;
       display: flex;
       flex-direction: row;
+      align-items: center;
       justify-content: space-between;
     }
   }
@@ -38,12 +40,19 @@ export const AddDeliveryButton = styled.button`
   font-weight: bold;
 `;
 
-export const FilterDelivery = styled.input`
+export const Filter = styled.div`
+  position: relative;
+  display: flex;
   align-items: center;
-  max-height: 32px;
-  line-height: 0;
+`;
+
+export const FilterDelivery = styled.input`
+  max-height: 28px;
+  padding: 16px;
   border: none;
   box-shadow: 0 0 1px;
+  padding: 1rem 0rem 1rem 3.5rem;
+  width: 100%;
 `;
 
 export const DeliveryTable = styled.table`
@@ -78,21 +87,20 @@ export const DeliveryTable = styled.table`
 `;
 
 export const DeliveryStatus = styled.div`
-  width: 85%;
-  min-width: 96px;
-  display: flex;
-  flex-direction: row;
-  padding: 4px;
-  background: red;
-  border-radius: 12px;
-  font-weight: bold;
-
   figure {
     padding: 6px;
     margin: 2px 4px;
     border-radius: 50%;
     background: ${darken(0.08, '#7159c1')};
   }
+
+  display: flex;
+  max-width: 120px;
+  flex-direction: row;
+  padding: 4px 0 4px 4px;
+  background: red;
+  border-radius: 12px;
+  font-weight: bold;
 `;
 
 export const DeliverymanAvatar = styled.div`
