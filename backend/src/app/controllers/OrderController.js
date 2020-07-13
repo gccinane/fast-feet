@@ -47,6 +47,7 @@ class OrderController {
     const { page = 1, limit = 20 } = req.query;
     const orders = await Order.findAll({
       attributes: [
+        'id',
         'recipient_id',
         'deliveryman_id',
         'product',
@@ -54,6 +55,7 @@ class OrderController {
         'start_date',
         'end_date',
       ],
+      order: ['id'],
       limit,
       offset: (page - 1) * 20,
       include: [
