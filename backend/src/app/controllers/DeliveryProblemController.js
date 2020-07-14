@@ -40,9 +40,9 @@ class DeliveryProblemController {
   }
 
   async index(req, res) {
-    const { page = 1, limit = 10 } = req.query;
+    const { page = 1, limit = 10, q = '' } = req.query;
     const deliveries = await Order.findAll({
-      where: { canceled_at: null },
+      where: { canceled_at: null, description: { [Op.iLike]: `%${q}%` } },
       include: [
         {
           model: DeliveryProblem,
