@@ -14,6 +14,26 @@ import api from '~/services/api';
 
 function Delivery() {
   const [deliveries, setDeliveries] = useState([]);
+  const [search, setSearch] = useState('');
+  const letterAvatar = [
+    '#F4EFFC',
+    '#FCF4EE',
+    '#EBFBFA',
+    '#FFEEF1',
+    '#F4F9EF',
+    '#FCFCEF',
+  ];
+
+  function setDeliverymanInitialLetters(name) {
+    const splittedName = name.split(' ');
+
+    const initialLetters =
+      splittedName.length !== 1
+        ? (splittedName[0].charAt(0) + splittedName[1].charAt(1)).toUpperCase()
+        : (splittedName[0].charAt(0) + splittedName[0].charAt(1)).toUpperCase();
+
+    return initialLetters;
+  }
 
   function setDeliveryStatus(delivery) {
     if (delivery.canceled_at) {
@@ -25,7 +45,6 @@ function Delivery() {
     }
 
     if (delivery.start_date) {
-      console.tron.log('ret');
       return { text: 'RETIRADA', background: '#BAD2FF', color: '#4D85EE' };
     }
 
@@ -43,9 +62,11 @@ function Delivery() {
         const parsedDeliveries = response.data.map((delivery) => ({
           ...delivery,
           status: setDeliveryStatus(delivery),
+          deliverymanInitialLetters: setDeliverymanInitialLetters(
+            delivery.deliveryman.name
+          ),
         }));
         setDeliveries(parsedDeliveries);
-        console.tron.log(parsedDeliveries);
       } catch (error) {
         console.tron.log(error);
       }
@@ -53,6 +74,27 @@ function Delivery() {
 
     loadDeliveries();
   }, []);
+
+  useEffect(() => {
+    async function reloadDeliveries() {
+      const response = await api.get(`orders?q=${search}`);
+      const parsedDeliveries = response.data.map((delivery) => ({
+        ...delivery,
+        status: setDeliveryStatus(delivery),
+        deliverymanInitialLetters: setDeliverymanInitialLetters(
+          delivery.deliveryman.name
+        ),
+      }));
+      console.tron.log(parsedDeliveries);
+      setDeliveries(parsedDeliveries);
+    }
+
+    reloadDeliveries();
+  }, [search]);
+
+  function filterDeliveries(searchInput) {
+    setSearch(searchInput);
+  }
 
   return (
     <Container>
@@ -69,6 +111,8 @@ function Delivery() {
               type="search"
               name="delivery"
               placeholder="Buscar por encomendas"
+              value={search}
+              onChange={(event) => filterDeliveries(event.target.value)}
             />
           </Filter>
 
@@ -91,22 +135,33 @@ function Delivery() {
           </tr>
         </thead>
         <tbody>
-          {deliveries.map(({ deliveryman, recipient, ...delivery }) => (
+          {deliveries.map(({ deliveryman, recipient, status, ...delivery }) => (
             <tr key={String(delivery.id)}>
               <td>{delivery.id}</td>
               <td>{delivery.product}</td>
               <td>
                 <DeliverymanAvatar>
-                  <DeliverymanInitialLetters>DJ</DeliverymanInitialLetters>
+                  <DeliverymanInitialLetters
+                    color={
+                      letterAvatar[
+                        delivery.deliverymanInitialLetters.length % delivery.id
+                      ]
+                    }
+                  >
+                    {delivery.deliverymanInitialLetters}
+                  </DeliverymanInitialLetters>
                   {deliveryman.name}
                 </DeliverymanAvatar>
               </td>
               <td>{recipient.city}</td>
               <td>{recipient.state}</td>
               <td>
-                <DeliveryStatus>
+                <DeliveryStatus
+                  background={status.background}
+                  color={status.color}
+                >
                   <figure />
-                  {delivery.status.text}
+                  {status.text}
                 </DeliveryStatus>
               </td>
               <td>

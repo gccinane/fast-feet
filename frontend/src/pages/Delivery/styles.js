@@ -86,33 +86,35 @@ export const DeliveryTable = styled.table`
   }
 `;
 
+export const DeliverymanAvatar = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+
+export const DeliverymanInitialLetters = styled.div`
+  height: 10%;
+  padding: 6px;
+  border-radius: 50%;
+  background: ${(props) => props.color};
+  color: ${(props) => darken(0.15, props.color)};
+  margin-right: 5px;
+`;
+
 export const DeliveryStatus = styled.div`
   figure {
     padding: 6px;
     margin: 2px 4px;
     border-radius: 50%;
-    background: ${darken(0.08, '#7159c1')};
+    background: ${(props) => props.color};
   }
 
   display: flex;
   max-width: 120px;
   flex-direction: row;
   padding: 4px 0 4px 4px;
-  background: red;
+  color: ${(props) => props.color};
+  background: ${(props) => props.background};
   border-radius: 12px;
   font-weight: bold;
-`;
-
-export const DeliverymanAvatar = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-`;
-export const DeliverymanInitialLetters = styled.div`
-  height: 10%;
-  padding: 6px;
-  border-radius: 50%;
-  background: #6b8e23;
-  color: ${darken(0.15, '#6b8e23')};
-  margin-right: 5px;
 `;
