@@ -1,8 +1,22 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { darken } from 'polished';
 
 export const Container = styled.div`
   height: 100%;
+
+  #pageButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto;
+    max-width: 980px;
+    width: 70%;
+  }
+  p {
+    font-size: 80px;
+    font-weight: bold;
+  }
 `;
 
 export const AddDeliveryButton = styled.button`
@@ -66,4 +80,17 @@ export const DeliveryStatus = styled.div`
   background: ${(props) => props.background};
   border-radius: 12px;
   font-weight: bold;
+`;
+
+export const PageButton = styled.button`
+  border: none;
+  color: #7159c1;
+  background: none;
+  ${(props) =>
+    props.firstpage &&
+    css`
+      color: #000;
+      cursor: not-allowed;
+      opacity: 0.4;
+    `}
 `;

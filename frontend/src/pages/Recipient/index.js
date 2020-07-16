@@ -1,14 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import api from '~/services/api';
+
 import { Container } from './styles';
 import Table from '~/components/Table';
 import SubHeader from '~/components/SubHeader';
 
 export default function Recipient() {
+  const [recipients, setRecipients] = useState([]);
+  const [search, setSearch] = useState('');
+
+  useEffect(() => {
+    async function loadDeliveries() {
+      const response = await api.get(`recipients?q=${search}`);
+      const parsedRecipients = response.data.map((recipient) => ({
+        ...recipient,
+        address: `${recipient.street}, ${recipient.street_number}, ${recipient.city} - ${recipient.state}`,
+      }));
+      setRecipients(parsedRecipients);
+    }
+
+    loadDeliveries();
+  }, [search]);
   return (
     <Container>
       <SubHeader
         placeholder="Buscar por destinatários"
         title="Gerenciar destinatários"
+        search={search}
+        setSearch={setSearch}
       />
       <Table>
         <thead>
@@ -20,12 +39,14 @@ export default function Recipient() {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>jd</td>
-            <td>Rua 19 norte lote 5 ed Lorys apt 308</td>
-            <td>...</td>
-          </tr>
+          {recipients.map((recipient) => (
+            <tr key={String(recipient.id)}>
+              <td>{recipient.id}</td>
+              <td>{recipient.name}</td>
+              <td>{recipient.address}</td>
+              <td>...</td>
+            </tr>
+          ))}
         </tbody>
       </Table>
     </Container>

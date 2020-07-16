@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
 
 export const Container = styled.div`
   display: flex;
@@ -19,15 +20,6 @@ export const Container = styled.div`
   nav {
     flex: 1;
     margin: 24px 0 4px 0;
-
-    button {
-      font-size: 14px;
-      color: #343434;
-      font-weight: bold;
-      background: none;
-      margin: 0 16px;
-      border: none;
-    }
   }
 
   aside {
@@ -42,4 +34,17 @@ export const Container = styled.div`
       border: none;
     }
   }
+`;
+
+export const NavButton = styled(NavLink).attrs({
+  activeStyle: {
+    color: '#444',
+  },
+})`
+  font-size: 14px;
+  color: #ababab;
+  font-weight: bold;
+  background: none;
+  margin: 0 16px;
+  border: none;
 `;
