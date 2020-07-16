@@ -115,7 +115,7 @@ function Delivery() {
               {deliveries.map(
                 ({ deliveryman, recipient, status, ...delivery }) => (
                   <tr key={String(delivery.id)}>
-                    <td>{delivery.id}</td>
+                    <td>#{delivery.id}</td>
                     <td>{delivery.product}</td>
                     <td>
                       <DeliverymanAvatar>

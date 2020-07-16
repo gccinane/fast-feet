@@ -41,7 +41,7 @@ export default function Recipient() {
         <tbody>
           {recipients.map((recipient) => (
             <tr key={String(recipient.id)}>
-              <td>{recipient.id}</td>
+              <td>#{recipient.id}</td>
               <td>{recipient.name}</td>
               <td>{recipient.address}</td>
               <td>...</td>
