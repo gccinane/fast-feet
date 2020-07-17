@@ -29,18 +29,18 @@ export default function AddOrder() {
   return (
     <Container>
       <div>
-        <h1>Cadastro de entregadores</h1>
+        <h1>Cadastro de encomendas</h1>
         <BackButton type="button" onClick={handleNavigateBack}>
           <FiChevronLeft size={20} color="#fff" />
           VOLTAR
         </BackButton>
 
-        <SaveButton type="submit" form="createdeliveryman">
+        <SaveButton type="submit" form="createdelivery">
           <FiCheck size={20} color="#eee" />
           SALVAR
         </SaveButton>
       </div>
-      <Form schema={schema} onSubmit={handleSubmit} id="createdeliveryman">
+      <Form schema={schema} onSubmit={handleSubmit} id="createdelivery">
         <label htmlFor="avatar">
           <FiImage size={50} color="#d2d2d2" />
           Adicionar foto

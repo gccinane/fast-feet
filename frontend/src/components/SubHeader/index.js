@@ -42,4 +42,5 @@ SubHeader.propTypes = {
   title: PropTypes.string.isRequired,
   placeholder: PropTypes.string.isRequired,
   setSearch: PropTypes.func.isRequired,
+  navigateTo: PropTypes.string.isRequired,
 };
