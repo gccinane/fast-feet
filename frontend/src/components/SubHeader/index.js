@@ -3,7 +3,13 @@ import { FiSearch, FiPlus } from 'react-icons/fi';
 import PropTypes from 'prop-types';
 import { Filter, AddButton, Header } from './styles';
 
-export default function SubHeader({ search, setSearch, title, placeholder }) {
+export default function SubHeader({
+  search,
+  setSearch,
+  title,
+  placeholder,
+  navigateTo,
+}) {
   return (
     <Header>
       <h1>{title}</h1>
@@ -22,7 +28,7 @@ export default function SubHeader({ search, setSearch, title, placeholder }) {
           />
         </div>
 
-        <AddButton type="button">
+        <AddButton to={navigateTo}>
           <FiPlus size={24} color="#eee" style={{ marginRight: '4px' }} />
           CADASTRAR
         </AddButton>

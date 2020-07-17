@@ -24,6 +24,7 @@ function Deliveryman() {
         title="Gerenciar entregadores"
         search={search}
         setSearch={setSearch}
+        navigateTo="deliveryman/create"
       />
       <Table>
         <thead>
@@ -39,7 +40,7 @@ function Deliveryman() {
           {deliverymen.map((deliveryman) => (
             <tr>
               <td>#{deliveryman.id}</td>
-              <td>{deliveryman.avatar.path}</td>
+              <td>{deliveryman.avatar_id}</td>
               <td>{deliveryman.name}</td>
               <td>{deliveryman.email}</td>
               <td>...</td>

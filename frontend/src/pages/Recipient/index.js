@@ -28,6 +28,7 @@ export default function Recipient() {
         title="Gerenciar destinatários"
         search={search}
         setSearch={setSearch}
+        navigateTo="recipient/create"
       />
       <Table>
         <thead>

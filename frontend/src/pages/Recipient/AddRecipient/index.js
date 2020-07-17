@@ -11,9 +11,9 @@ const schema = Yup.object().shape({
   email: Yup.string().required('O email é obrigatório'),
 });
 
-export default function AddOrder() {
+export default function AddDeliveryman() {
   function handleNavigateBack() {
-    return history.push('/delivery');
+    return history.push('/recipient');
   }
 
   function handleImage() {}

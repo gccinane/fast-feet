@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
 
 export const Header = styled.header`
   padding-top: 2px;
@@ -22,7 +23,7 @@ export const Header = styled.header`
   }
 `;
 
-export const AddButton = styled.button`
+export const AddButton = styled(NavLink)`
   padding: 8px;
   display: flex;
   flex-direction: row;

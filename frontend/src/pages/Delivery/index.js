@@ -94,6 +94,7 @@ function Delivery() {
         setSearch={setSearch}
         placeholder="Buscar por encomendas"
         title="Gerenciar encomendas"
+        navigateTo="delivery/create"
       />
       {loading ? (
         <h1>LOADING</h1>
