@@ -6,7 +6,7 @@ export const Container = styled.div`
 
   margin: 42px auto;
 
-  div {
+  #subheader {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -24,6 +24,16 @@ export const Container = styled.div`
     background: #fff;
     border-radius: 4px;
     text-align: center;
+
+    #description {
+      display: flex;
+      flex-direction: row;
+
+      p:not(:first-child) {
+        margin-left: 41.3%;
+      }
+    }
+
     p {
       font-weight: bold;
       color: #2a2a2a;
@@ -93,4 +103,11 @@ export const SaveButton = styled.button`
   border-radius: 4px;
   color: #eee;
   font-weight: bold;
+`;
+
+export const SelectContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
 `;
