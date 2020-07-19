@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { FiEdit2, FiTrash, FiEye } from 'react-icons/fi';
 import api from '~/services/api';
 import { Container } from './styles';
+
 import Table from '~/components/Table';
 import SubHeader from '~/components/SubHeader';
+import Actions from '~/components/Actions';
+
+const actionIcons = [FiEdit2, FiTrash, FiEye];
 
 function Deliveryman() {
   const [deliverymen, setDeliverymen] = useState([]);
@@ -43,7 +48,9 @@ function Deliveryman() {
               <td>{deliveryman.avatar_id}</td>
               <td>{deliveryman.name}</td>
               <td>{deliveryman.email}</td>
-              <td>...</td>
+              <td>
+                <Actions icons={actionIcons} />
+              </td>
             </tr>
           ))}
         </tbody>
