@@ -7,7 +7,7 @@ export const Container = styled.table`
   border-collapse: separate;
   border-spacing: 0 1em;
   color: #2c2c2c;
-
+  z-index: 0;
   thead,
   th {
     color: #101010;

@@ -8,6 +8,7 @@ import SubHeader from '~/components/SubHeader';
 import Actions from '~/components/Actions';
 
 const actionIcons = [FiEdit2, FiTrash, FiEye];
+const iconcolors = ['#7159c1', '#000', '#a21'];
 
 function Deliveryman() {
   const [deliverymen, setDeliverymen] = useState([]);
@@ -49,7 +50,11 @@ function Deliveryman() {
               <td>{deliveryman.name}</td>
               <td>{deliveryman.email}</td>
               <td>
-                <Actions icons={actionIcons} />
+                <Actions
+                  icons={actionIcons}
+                  colors={iconcolors}
+                  description={['visualizar', 'deletar', 'editar']}
+                />
               </td>
             </tr>
           ))}
