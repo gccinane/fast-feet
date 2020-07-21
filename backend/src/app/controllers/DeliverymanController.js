@@ -54,6 +54,25 @@ class DeliverymanController {
     return res.json(deliverymans);
   }
 
+  async show(req, res) {
+    const { page = 1, limit = 10 } = req.query;
+    const deliverymans = await Deliveryman.findAll(req.params.id, {
+      attributes: ['id', 'name', 'email'],
+      order: ['id'],
+      limit,
+      offset: (page - 1) * limit,
+      include: [
+        {
+          model: File,
+          as: 'avatar',
+          attributes: ['id', 'path', 'url'],
+        },
+      ],
+    });
+
+    return res.json(deliverymans);
+  }
+
   async update(req, res) {
     const schema = Yup.object().shape({
       name: Yup.string(),

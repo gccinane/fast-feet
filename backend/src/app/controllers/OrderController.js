@@ -46,7 +46,6 @@ class OrderController {
 
   async index(req, res) {
     const { page = 1, limit = 20, q = '' } = req.query;
-    console.log(q);
     const orders = await Order.findAll({
       where: {
         product: {
@@ -79,6 +78,37 @@ class OrderController {
       ],
     });
     return res.json(orders);
+  }
+
+  async show(req, res) {
+    const { page = 1, limit = 20 } = req.query;
+    const order = await Order.findByPk(req.params.id, {
+      attributes: [
+        'id',
+        'recipient_id',
+        'deliveryman_id',
+        'product',
+        'canceled_at',
+        'start_date',
+        'end_date',
+      ],
+      order: ['id'],
+      limit,
+      offset: (page - 1) * 20,
+      include: [
+        {
+          model: Recipient,
+          as: 'recipient',
+          attributes: { exclude: ['createdAt', 'updatedAt'] },
+        },
+        {
+          model: Deliveryman,
+          as: 'deliveryman',
+          attributes: ['id', 'name', 'email'],
+        },
+      ],
+    });
+    return res.json(order);
   }
 
   /**

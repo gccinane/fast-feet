@@ -64,6 +64,23 @@ class RecipientController {
     return res.json(recipients);
   }
 
+  async show(req, res) {
+    const { page = 1, limit = 5, q = '' } = req.query;
+
+    const recipient = await Recipient.findByPk(req.params.id, {
+      attributes: { exclude: ['createdAt', 'updatedAt'] },
+      offset: (page - 1) * limit,
+      where: {
+        name: {
+          [Op.iLike]: `%${q}%`,
+        },
+      },
+      order: ['id'],
+    });
+
+    return res.json(recipient);
+  }
+
   async update(req, res) {
     const schema = Yup.object().shape({
       name: Yup.string().required(),

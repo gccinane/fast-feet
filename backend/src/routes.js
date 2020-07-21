@@ -49,17 +49,20 @@ routes.delete('/problem/:id/cancel-delivery', DeliveryProblemController.delete);
 routes.post('/recipients', RecipientController.store);
 routes.put('/recipients/:id', RecipientController.update);
 routes.delete('/recipients/:id', RecipientController.delete);
+routes.get('/recipients/:id', RecipientController.show);
 routes.get('/recipients/', RecipientController.index);
 
 routes.post('/files', upload.single('file'), FileController.store);
 
 routes.post('/deliverymen', DeliverymanController.store);
 routes.get('/deliverymen', DeliverymanController.index);
+routes.get('/deliverymen/:id', DeliverymanController.show);
 routes.put('/deliverymen/:id', DeliverymanController.update);
 routes.delete('/deliverymen/:id', DeliverymanController.delete);
 
 routes.post('/orders', OrderController.store);
 routes.get('/orders', OrderController.index);
+routes.get('/orders/:id', OrderController.show);
 routes.put('/orders/:id', OrderController.update);
 routes.delete('/orders/:id', OrderController.delete);
 
