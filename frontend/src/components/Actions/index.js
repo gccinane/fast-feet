@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { IconContainer, DescriptionContainer, Container } from './styles';
+import { Container } from './styles';
 
-export default function Actions({ icons: Icons, colors, description, id }) {
+export default function Actions({
+  icons: Icons,
+  colors,
+  description,
+  handlers,
+  id,
+}) {
   const [visible, setVisible] = useState(false);
 
   function handleClick() {
@@ -15,9 +21,9 @@ export default function Actions({ icons: Icons, colors, description, id }) {
         ...
       </button>
       {visible ? (
-        <Container>
+        <Container isDelivery={Icons.length === 3}>
           {Icons.map((Icon, index) => (
-            <button type="button">
+            <button type="button" onClick={() => handlers[index](id)}>
               <Icon size={20} color={colors[index]} />
               <p>{description[index]}</p>
             </button>
@@ -32,5 +38,6 @@ Actions.propTypes = {
   icons: PropTypes.oneOfType([PropTypes.func, PropTypes.element]).isRequired,
   colors: PropTypes.arrayOf([PropTypes.string]).isRequired,
   description: PropTypes.arrayOf([PropTypes.string]).isRequired,
-  id: PropTypes.string,
+  handlers: PropTypes.arrayOf([PropTypes.func]).isRequired,
+  id: PropTypes.string.isRequired,
 };

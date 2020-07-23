@@ -38,7 +38,7 @@ class DeliverymanController {
           [Op.iLike]: `%${q}%`,
         },
       },
-      attributes: ['id', 'name', 'email'],
+      attributes: ['id', 'name', 'email', 'avatar_id'],
       order: ['id'],
       limit,
       offset: (page - 1) * limit,
@@ -55,12 +55,8 @@ class DeliverymanController {
   }
 
   async show(req, res) {
-    const { page = 1, limit = 10 } = req.query;
-    const deliverymans = await Deliveryman.findAll(req.params.id, {
+    const deliveryman = await Deliveryman.findByPk(req.params.id, {
       attributes: ['id', 'name', 'email'],
-      order: ['id'],
-      limit,
-      offset: (page - 1) * limit,
       include: [
         {
           model: File,
@@ -70,7 +66,7 @@ class DeliverymanController {
       ],
     });
 
-    return res.json(deliverymans);
+    return res.json(deliveryman);
   }
 
   async update(req, res) {

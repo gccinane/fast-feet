@@ -17,6 +17,7 @@ const routes = new Router();
 const upload = multer(multerConfig);
 
 routes.post('/sessions', SessionController.store);
+routes.post('/files', upload.single('file'), FileController.store);
 
 routes.get(
   '/deliveryman/:id/intransit-deliveries',
@@ -51,8 +52,6 @@ routes.put('/recipients/:id', RecipientController.update);
 routes.delete('/recipients/:id', RecipientController.delete);
 routes.get('/recipients/:id', RecipientController.show);
 routes.get('/recipients/', RecipientController.index);
-
-routes.post('/files', upload.single('file'), FileController.store);
 
 routes.post('/deliverymen', DeliverymanController.store);
 routes.get('/deliverymen', DeliverymanController.index);

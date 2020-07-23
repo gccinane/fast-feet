@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { FiArrowRight, FiArrowLeft } from 'react-icons/fi';
+import {
+  FiArrowRight,
+  FiArrowLeft,
+  FiEdit2,
+  FiTrash,
+  FiEye,
+} from 'react-icons/fi';
+
 import {
   Container,
   DeliveryStatus,
@@ -7,10 +14,15 @@ import {
   DeliverymanInitialLetters,
   PageButton,
 } from './styles';
+import Actions from '~/components/Actions';
 import Table from '~/components/Table';
 import SubHeader from '~/components/SubHeader';
 
 import api from '~/services/api';
+import history from '~/services/history';
+
+const actionIcons = [FiEye, FiTrash, FiEdit2];
+const iconcolors = ['#7159c1', '#a21', '#000'];
 
 function Delivery() {
   const [deliveries, setDeliveries] = useState([]);
@@ -87,6 +99,21 @@ function Delivery() {
     loadDeliveries();
   }, [search, page]);
 
+  function handleNavigateUpdate(id) {
+    history.push({
+      pathname: `/delivery/update/${id}`,
+    });
+  }
+
+  function handleNavigateView() {
+    return history.push({ pathname: '/delivery/create' });
+  }
+
+  function handleNavigateDelete() {
+    /** TIRA O UPDATE DO REDIRECIONAMENTO */
+    return history.push({ pathname: '/delivery/update' });
+  }
+
   return (
     <Container>
       <SubHeader
@@ -145,7 +172,17 @@ function Delivery() {
                       </DeliveryStatus>
                     </td>
                     <td>
-                      <button type="button">...</button>
+                      <Actions
+                        icons={actionIcons}
+                        description={['Visualizar', 'Deletar', 'Editar']}
+                        colors={iconcolors}
+                        id={delivery.id}
+                        handlers={[
+                          handleNavigateView,
+                          handleNavigateUpdate,
+                          handleNavigateDelete,
+                        ]}
+                      />
                     </td>
                   </tr>
                 )

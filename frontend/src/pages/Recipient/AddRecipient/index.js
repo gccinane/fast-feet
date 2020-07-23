@@ -39,16 +39,15 @@ export default function AddDeliveryman() {
     zip_code
   ) {
     try {
-      api.post(
-        'recipients',
+      api.post('recipients', {
         name,
         street,
         street_number,
         street_complement,
         city,
         state,
-        zip_code
-      );
+        zip_code,
+      });
     } catch (error) {
       console.tron.log('ay mi amor');
     }

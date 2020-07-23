@@ -6,14 +6,12 @@ import Route from './Route';
 import SignIn from '../pages/SignIn';
 
 import Deliveryman from '../pages/Deliveryman';
-import AddDeliveryman from '~/pages/Deliveryman/AddDeliveryman';
-import UpdateDeliveryman from '~/pages/Deliveryman/UpdateDeliveryman';
+import DeliverymanForm from '~/pages/Deliveryman/Form';
 
 import Problem from '../pages/Problem';
 
 import Delivery from '../pages/Delivery';
-import AddDelivery from '../pages/Delivery/AddDelivery';
-import UpdateDelivery from '../pages/Delivery/UpdateDelivery';
+import DeliveryForm from '../pages/Delivery/Form';
 
 import Recipient from '../pages/Recipient';
 import AddRecipient from '~/pages/Recipient/AddRecipient';
@@ -28,20 +26,20 @@ export default function Routes() {
       <Route
         path="/deliveryman/create"
         exact
-        component={AddDeliveryman}
+        component={DeliverymanForm}
         isPrivate
       />
       <Route
-        path="/deliveryman/update"
-        component={UpdateDeliveryman}
+        path="/deliveryman/update/:id"
+        component={DeliverymanForm}
         isPrivate
       />
 
       <Route path="/problem" component={Problem} isPrivate />
 
       <Route path="/delivery" exact component={Delivery} isPrivate />
-      <Route path="/delivery/create" exact component={AddDelivery} isPrivate />
-      <Route path="/delivery/update" component={UpdateDelivery} isPrivate />
+      <Route path="/delivery/create" exact component={DeliveryForm} isPrivate />
+      <Route path="/delivery/update/:id" component={DeliveryForm} isPrivate />
 
       <Route path="/recipient" exact component={Recipient} isPrivate />
       <Route
@@ -50,7 +48,11 @@ export default function Routes() {
         component={AddRecipient}
         isPrivate
       />
-      <Route path="/recipient/update" component={UpdateRecipient} isPrivate />
+      <Route
+        path="/recipient/update/:id"
+        component={UpdateRecipient}
+        isPrivate
+      />
     </Switch>
   );
 }

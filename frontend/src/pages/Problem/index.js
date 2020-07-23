@@ -10,7 +10,6 @@ export default function Problem() {
   useEffect(() => {
     async function loadDeliveries() {
       const response = await api.get(`delivery-problems`);
-      console.tron.log(response.data);
       setProblems(response.data);
     }
 

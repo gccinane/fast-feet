@@ -39,30 +39,6 @@ export const Container = styled.div`
       padding: 8px;
       width: 100%;
     }
-
-    label {
-      border: 2px dashed #eee;
-      padding-top: 40px;
-      margin: 0 auto;
-      width: 160px;
-      height: 160px;
-      align-items: center;
-      display: flex;
-      flex-direction: column;
-      color: #b9b9b9;
-      font-weight: bold;
-      border-radius: 50%;
-
-      cursor: pointer;
-
-      &:hover {
-        opacity: 0.6;
-      }
-
-      input {
-        display: none;
-      }
-    }
   }
 `;
 
