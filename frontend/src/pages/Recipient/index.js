@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import { FiEdit2, FiTrash } from 'react-icons/fi';
 import api from '~/services/api';
+import history from '~/services/history';
 
 import { Container } from './styles';
 import Table from '~/components/Table';
 import SubHeader from '~/components/SubHeader';
+import Actions from '~/components/Actions';
+
+const iconcolors = ['#7159c1', '#a21'];
+const actionIcons = [FiEdit2, FiTrash];
 
 export default function Recipient() {
   const [recipients, setRecipients] = useState([]);
@@ -21,6 +27,14 @@ export default function Recipient() {
 
     loadDeliveries();
   }, [search]);
+
+  function handleUpdateRecipient(id) {
+    history.push({ pathname: `recipient/update/${id}` });
+  }
+
+  function handleDeleteRecipient(id) {
+    history.push({ pathname: `recipient/delete/${id}` });
+  }
   return (
     <Container>
       <SubHeader
@@ -45,7 +59,16 @@ export default function Recipient() {
               <td>#{recipient.id}</td>
               <td>{recipient.name}</td>
               <td>{recipient.address}</td>
-              <td>...</td>
+              <td>
+                {' '}
+                <Actions
+                  icons={actionIcons}
+                  colors={iconcolors}
+                  handlers={[handleUpdateRecipient, handleDeleteRecipient]}
+                  description={['Editar', 'Excluir']}
+                  id={recipient.id}
+                />
+              </td>
             </tr>
           ))}
         </tbody>

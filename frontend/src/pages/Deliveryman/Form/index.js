@@ -2,9 +2,10 @@ import React, { useEffect, useState, useRef } from 'react';
 import * as Yup from 'yup';
 import PropTypes from 'prop-types';
 
-import { Form, Input } from '@rocketseat/unform';
+import { Form } from '@unform/web';
 import { FiCheck, FiChevronLeft } from 'react-icons/fi';
 import { Container, SaveButton, BackButton } from './styles';
+import Input from '~/components/Input';
 import AvatarInput from './AvatarInput';
 
 import api from '~/services/api';
@@ -36,13 +37,12 @@ export default function DeliverymanForm({ match }) {
     return history.push('/deliveryman');
   }
 
-  function handleSubmit({ name, email, avatar_id }) {
-    console.tron.log(name, email, avatar_id);
+  function handleSubmit(data) {
     try {
       if (id) {
-        api.put(`deliverymen/${id}`, name, email, avatar_id);
+        api.put(`deliverymen/${id}`, data);
       } else {
-        api.post('deliverymen', name, email, avatar_id);
+        api.post('deliverymen', data);
       }
     } catch (error) {
       console.tron.log(error);
@@ -76,9 +76,9 @@ export default function DeliverymanForm({ match }) {
       >
         <AvatarInput name="avatar_id" currentAvatar={photoUrl} />
         <p>Nome</p>
-        <Input name="name" type="text" placeholder="Digite seu nome" />
+        <Input name="name" placeholder="Digite seu nome" />
         <p>Email</p>
-        <Input name="email" type="email" placeholder="Digite seu email" />
+        <Input name="email" placeholder="Digite seu email" />
       </Form>
     </Container>
   );

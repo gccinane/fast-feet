@@ -14,8 +14,7 @@ import Delivery from '../pages/Delivery';
 import DeliveryForm from '../pages/Delivery/Form';
 
 import Recipient from '../pages/Recipient';
-import AddRecipient from '~/pages/Recipient/AddRecipient';
-import UpdateRecipient from '~/pages/Recipient/UpdateRecipient';
+import Form from '~/pages/Recipient/Form';
 
 export default function Routes() {
   return (
@@ -42,17 +41,8 @@ export default function Routes() {
       <Route path="/delivery/update/:id" component={DeliveryForm} isPrivate />
 
       <Route path="/recipient" exact component={Recipient} isPrivate />
-      <Route
-        path="/recipient/create"
-        exact
-        component={AddRecipient}
-        isPrivate
-      />
-      <Route
-        path="/recipient/update/:id"
-        component={UpdateRecipient}
-        isPrivate
-      />
+      <Route path="/recipient/create" exact component={Form} isPrivate />
+      <Route path="/recipient/update/:id" component={Form} isPrivate />
     </Switch>
   );
 }
