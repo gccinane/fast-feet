@@ -67,7 +67,10 @@ export default function Problem() {
                   description={['Visualizar', 'Cancelar Encomenda']}
                   colors={iconcolors}
                   id={problem.id}
-                  handlers={[() => handleDetail(problem), handleDelete(id)]}
+                  handlers={[
+                    () => handleDetail(problem),
+                    () => handleDelete(problem.delivery_id),
+                  ]}
                 />
               </td>
             </tr>

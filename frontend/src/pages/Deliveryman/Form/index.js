@@ -25,12 +25,14 @@ export default function DeliverymanForm({ match }) {
       if (id) {
         const response = await api.get(`deliverymen/${id}`);
         setDeliveryman(response.data);
-        setPhotoUrl(response.data.avatar.url);
+        if (response.data.avatar_id) {
+          setPhotoUrl(response.data.avatar.url);
+        }
       }
     }
 
     loadDeliveryman();
-  }, [id]);
+  }, [id, deliveryman]);
 
   function handleNavigateBack() {
     return history.push('/deliveryman');

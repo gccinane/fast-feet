@@ -42,6 +42,7 @@ class DeliveryProblemController {
   async index(req, res) {
     const { page = 1, limit = 10 } = req.query;
     const problems = await DeliveryProblem.findAll({
+      where: { canceled_at: { [Op.not]: null } },
       limit,
       offset: (page - 1) * limit,
       order: ['id'],

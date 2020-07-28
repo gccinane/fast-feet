@@ -32,8 +32,15 @@ export default function Recipient() {
     history.push({ pathname: `recipient/update/${id}` });
   }
 
-  function handleDeleteRecipient(id) {
-    history.push({ pathname: `recipient/delete/${id}` });
+  async function handleDeleteRecipient(id) {
+    try {
+      if (window.confirm('Deseja realmente excluir este destinatário?')) {
+        await api.delete(`recipients/${id}`);
+        setRecipients(recipients.filter((recipient) => recipient.id !== id));
+      }
+    } catch (error) {
+      console.tron.log(error);
+    }
   }
   return (
     <Container>
