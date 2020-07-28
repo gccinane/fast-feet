@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import PropTypes from 'prop-types';
 
@@ -20,7 +20,6 @@ export default function DeliverymanForm({ match }) {
   const { id } = match.params;
   const [deliveryman, setDeliveryman] = useState(null);
   const [photoUrl, setPhotoUrl] = useState('');
-  const formRef = useRef(null);
   useEffect(() => {
     async function loadDeliveryman() {
       if (id) {
@@ -31,7 +30,7 @@ export default function DeliverymanForm({ match }) {
     }
 
     loadDeliveryman();
-  }, []);
+  }, [id]);
 
   function handleNavigateBack() {
     return history.push('/deliveryman');

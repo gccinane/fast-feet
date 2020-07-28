@@ -40,7 +40,7 @@ export default function RecipientForm({ match }) {
     }
 
     loadRecipient();
-  }, []);
+  }, [id]);
   function handleNavigateBack() {
     return history.push('/recipient');
   }

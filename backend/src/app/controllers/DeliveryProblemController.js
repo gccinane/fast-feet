@@ -41,20 +41,12 @@ class DeliveryProblemController {
 
   async index(req, res) {
     const { page = 1, limit = 10 } = req.query;
-    const deliveries = await Order.findAll({
-      where: { canceled_at: null },
-      include: [
-        {
-          model: DeliveryProblem,
-          as: 'problems',
-          where: { delivery_id: { [Op.not]: null } },
-        },
-      ],
+    const problems = await DeliveryProblem.findAll({
       limit,
       offset: (page - 1) * limit,
       order: ['id'],
     });
-    return res.json(deliveries);
+    return res.json(problems);
   }
 
   async show(req, res) {

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+
 import {
   FiArrowRight,
   FiArrowLeft,
@@ -6,6 +7,14 @@ import {
   FiTrash,
   FiEye,
 } from 'react-icons/fi';
+import { format, parseISO } from 'date-fns';
+import Actions from '~/components/Actions';
+import Table from '~/components/Table';
+import SubHeader from '~/components/SubHeader';
+import Detail from './Detail';
+
+import api from '~/services/api';
+import history from '~/services/history';
 
 import {
   Container,
@@ -14,12 +23,6 @@ import {
   DeliverymanInitialLetters,
   PageButton,
 } from './styles';
-import Actions from '~/components/Actions';
-import Table from '~/components/Table';
-import SubHeader from '~/components/SubHeader';
-
-import api from '~/services/api';
-import history from '~/services/history';
 
 const actionIcons = [FiEye, FiTrash, FiEdit2];
 const iconcolors = ['#7159c1', '#a21', '#000'];
@@ -29,6 +32,8 @@ function Delivery() {
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
+  const [deliveryDetail, setDeliveryDetail] = useState({});
+  const [visible, setVisible] = useState(false);
   const letterAvatar = [
     '#F4EFFC',
     '#FCF4EE',
@@ -77,6 +82,15 @@ function Delivery() {
     return setPage(page - 1);
   }
 
+  function handleVisible() {
+    setVisible(!visible);
+  }
+
+  function handleDetails(delivery, deliveryman, recipient) {
+    setDeliveryDetail(delivery, deliveryman, recipient);
+    handleVisible();
+  }
+
   useEffect(() => {
     async function loadDeliveries() {
       setLoading(true);
@@ -88,6 +102,14 @@ function Delivery() {
       const parsedDeliveries = response.data.map((delivery) => ({
         ...delivery,
         status: setDeliveryStatus(delivery),
+        street_number: `${delivery.recipient.street}, ${delivery.recipient.street_number}`,
+        city_state: `${delivery.recipient.city} - ${delivery.recipient.state}`,
+        start_date_formatted: delivery.start_date
+          ? format(parseISO(delivery.start_date), 'dd/MM/yyyy')
+          : null,
+        end_date_formatted: delivery.end_date
+          ? format(parseISO(delivery.end_date), 'dd/MM/yyyy')
+          : null,
         deliverymanInitialLetters: setDeliverymanInitialLetters(
           delivery.deliveryman.name
         ),
@@ -105,13 +127,14 @@ function Delivery() {
     });
   }
 
-  function handleNavigateView() {
-    return history.push({ pathname: '/delivery/create' });
-  }
-
-  function handleNavigateDelete() {
-    /** TIRA O UPDATE DO REDIRECIONAMENTO */
-    return history.push({ pathname: '/delivery/update' });
+  async function handleDelete(id) {
+    try {
+      if (window.confirm('Você realmente deseja deletar esta encomenda?')) {
+        await api.delete(`orders/${id}`);
+      }
+    } catch (error) {
+      console.tron.log(error);
+    }
   }
 
   return (
@@ -144,7 +167,7 @@ function Delivery() {
                 ({ deliveryman, recipient, status, ...delivery }) => (
                   <tr key={String(delivery.id)}>
                     <td>#{delivery.id}</td>
-                    <td>{delivery.product}</td>
+                    <td>{recipient.name}</td>
                     <td>
                       <DeliverymanAvatar>
                         <DeliverymanInitialLetters
@@ -178,9 +201,9 @@ function Delivery() {
                         colors={iconcolors}
                         id={delivery.id}
                         handlers={[
-                          handleNavigateView,
+                          () => handleDetails(delivery, deliveryman, recipient),
+                          handleDelete,
                           handleNavigateUpdate,
-                          handleNavigateDelete,
                         ]}
                       />
                     </td>
@@ -198,6 +221,8 @@ function Delivery() {
               <FiArrowRight size={24} />
             </PageButton>
           </div>
+
+          <Detail delivery={deliveryDetail} visible={visible} />
         </>
       )}
     </Container>
