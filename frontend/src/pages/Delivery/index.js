@@ -1,16 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
-import {
-  FiArrowRight,
-  FiArrowLeft,
-  FiEdit2,
-  FiTrash,
-  FiEye,
-} from 'react-icons/fi';
+import { FiEdit2, FiTrash, FiEye } from 'react-icons/fi';
 import { format, parseISO } from 'date-fns';
 import Actions from '~/components/Actions';
 import Table from '~/components/Table';
 import SubHeader from '~/components/SubHeader';
+import Pagination from '~/components/Pagination';
 import Detail from './Detail';
 
 import api from '~/services/api';
@@ -21,7 +16,6 @@ import {
   DeliveryStatus,
   DeliverymanAvatar,
   DeliverymanInitialLetters,
-  PageButton,
 } from './styles';
 
 const actionIcons = [FiEye, FiTrash, FiEdit2];
@@ -72,14 +66,6 @@ function Delivery() {
       background: '#F0F0DF',
       color: '#C1BC35',
     };
-  }
-
-  function incrementPage() {
-    return setPage(page + 1);
-  }
-
-  function decrementPage() {
-    return setPage(page - 1);
   }
 
   function handleVisible() {
@@ -212,15 +198,7 @@ function Delivery() {
               )}
             </tbody>
           </Table>
-          <div id="pageButtons">
-            <PageButton firstpage={page === 1} onClick={decrementPage}>
-              <FiArrowLeft size={24} />
-            </PageButton>
-
-            <PageButton onClick={incrementPage}>
-              <FiArrowRight size={24} />
-            </PageButton>
-          </div>
+          <Pagination page={page} handlePage={setPage} />
 
           <Detail delivery={deliveryDetail} visible={visible} />
         </>

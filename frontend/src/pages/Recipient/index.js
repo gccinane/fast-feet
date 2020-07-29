@@ -7,6 +7,7 @@ import { Container } from './styles';
 import Table from '~/components/Table';
 import SubHeader from '~/components/SubHeader';
 import Actions from '~/components/Actions';
+import Pagination from '~/components/Pagination';
 
 const iconcolors = ['#7159c1', '#a21'];
 const actionIcons = [FiEdit2, FiTrash];
@@ -14,10 +15,13 @@ const actionIcons = [FiEdit2, FiTrash];
 export default function Recipient() {
   const [recipients, setRecipients] = useState([]);
   const [search, setSearch] = useState('');
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     async function loadDeliveries() {
-      const response = await api.get(`recipients?q=${search}`);
+      const response = await api.get(`recipients?q=${search}`, {
+        params: { page },
+      });
       const parsedRecipients = response.data.map((recipient) => ({
         ...recipient,
         address: `${recipient.street}, ${recipient.street_number}, ${recipient.city} - ${recipient.state}`,
@@ -26,7 +30,7 @@ export default function Recipient() {
     }
 
     loadDeliveries();
-  }, [search]);
+  }, [search, page]);
 
   function handleUpdateRecipient(id) {
     history.push({ pathname: `recipient/update/${id}` });
@@ -80,6 +84,8 @@ export default function Recipient() {
           ))}
         </tbody>
       </Table>
+
+      <Pagination page={page} handlePage={setPage} />
     </Container>
   );
 }
